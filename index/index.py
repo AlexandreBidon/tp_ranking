@@ -1,15 +1,25 @@
 from urllib import request
 from bs4 import BeautifulSoup
+import json
 
 class Index():
 
-    def __init__(self, data_path : str, timeout : int, print_progress = False) -> None:
-        self.url_list = self.__import_data(data_path = data_path)
+    def __init__(
+        self
+        ,import_data_path : str
+        ,export_index_path : str
+        ,timeout : int
+        ,export_stat_path = None
+        ,print_progress = False
+        ) -> None:
+        self.url_list = self.__import_data(data_path = import_data_path)
         self.count_documents = len(self.url_list)
         self.count_tokens = 0
         self.count_errors = 0
         self.index = {}
         self.__tokenize_title(timeout = timeout, print_progress = print)
+
+        self.__export_index_data(folder_path=export_index_path)
 
     def __tokenize_title(self, timeout : int, print_progress = False):
         for i in range(self.count_documents):
@@ -34,11 +44,17 @@ class Index():
 
     def __import_data(self, data_path : str):
         # TODO : import JSON
-        url_list = [
-            "https://fr.wikipedia.org/wiki/Stargate",
-            "https://www.grandir-nature.com/",
-            "https://www.strategic-culture.org/"]
-        return(url_list)
+        file = open(data_path)
+        return(json.load(file))
+
+    def __export_index_data(self, folder_path : str):
+        with open("test.json", 'w+') as outfile:
+            for token in self.index:
+                outfile.write(f'"{token}" : ')
+                for url in set(self.index[token]):
+                    outfile.write(f'{url}:{self.index[token].count(url)},')
+                outfile.write("\n")
+            outfile.close()
 
     def __str__(self):
         return f"--- STATISTIQUES ---\nNombre de documents : {self.count_documents}\nNombre d'erreurs lors de l'indexage : {self.count_errors}\nNombre de tokens : {self.count_tokens}"
