@@ -1,5 +1,5 @@
 import json
-import utils
+
 
 class SearchEngine():
 
@@ -14,7 +14,7 @@ class SearchEngine():
     def search(
         self
         ,request : str
-        ,request_type = 'AND' # AND OR
+        ,request_all_tokens = True
         ):
         # On tokenise la requete
         request_tokens = request.lower().split(' ')
@@ -31,16 +31,15 @@ class SearchEngine():
         for token in index_result:
             for website_id in index_result[token]:
                 if website_id in ranked_dict:
-                    ranked_dict[website_id] += index_result[token]['count']
+                    ranked_dict[website_id] += index_result[token][website_id]['count']
                 else:
-                    ranked_dict[website_id] = index_result[token]['count']
-
-        # On construit le ranking en fonction du type de requete
-        if request_type == 'OR':
-            # Si requete OU, on retourne directement le ranking construit
-            return(ranked_dict)
-        elif request_type == 'AND':
-            #
-            pass
-        print(index_result)
+                    ranked_dict[website_id] = index_result[token][website_id]['count']
+        if request_all_tokens :
+            # On ne retient que les sites qui sont contiennent tous les tokens
+            website_all_tokens = []
+            for token in index_result:
+                website_all_tokens.append([website_id for website_id in index_result[token]])
+            website_all_tokens = set.intersection(*map(set,website_all_tokens))
+            ranked_dict = {key: ranked_dict[key] for key in website_all_tokens}
+        return(ranked_dict)
         
