@@ -2,8 +2,6 @@ from ranking.search_engine import SearchEngine
 import click
 
 
-
-
 @click.command()
 @click.option('--request', help='The request to search.')
 @click.option('--request_all_tokens',  default= False, help='Require all the tokens of the request in the result.')

@@ -7,12 +7,19 @@
 
 Ce repo présente une implémentation basique d'un ranking de page web.
 
-### Comment lancer l'index
+### Comment lancer le ranking
 
 Pour commencer il faut installer les dépendances du projet :
 
 > pip install -r requirements.txt
 
-Le fichier main.py contient une démo du ranking. 
+Il est ensuite possible d'utiliser l'outil avec la commande suivante :
+
+> python3 main.py --request <insérer sa requete>
+
+Il est possible d'ajouter les arguments suivants à la commande :
+
+- '--request_all_tokens' : désactivé par défaut. Si True, cherche uniquement les sites contenant tous les termes de la requete. (Filtre ET/OU)
+- '--result_file' : pour modifier le chemin du fichier d'export
 
 ## Fonctionnement
