@@ -22,4 +22,10 @@ Il est possible d'ajouter les arguments suivants à la commande :
 - '--request_all_tokens' : désactivé par défaut. Si True, cherche uniquement les sites contenant tous les termes de la requete. (Filtre ET/OU)
 - '--result_file' : pour modifier le chemin du fichier d'export
 
+### Comment lancer les tests
+
+Il est possible de lancer les tests de la manière suivante :
+
+> python3 -m unittest tests.test_ranking
+
 ## Fonctionnement
